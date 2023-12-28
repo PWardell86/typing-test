@@ -1,0 +1,24 @@
+.test-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    white-space: pre;
+    font-family: 'Cascadia Code', monospace;
+    font-size: 30px;
+    justify-items: center;
+}
+
+.test-container > div {
+    /* border: 1px solid black; */
+    margin: 1px;
+    background: radial-gradient(ellipse at center, white, rgba(215, 215, 215, 0.485));
+}
+
+.correct {
+    background: radial-gradient(ellipse at center, white, rgba(62, 241, 56, 0.655)) !important;
+    /* color: rgb(14, 226, 14); */
+}
+
+.incorrect {
+    background: radial-gradient(ellipse at center, white, rgba(198, 50, 50, 0.485)) !important;
+}
