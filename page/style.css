@@ -1,24 +1,60 @@
-.test-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    white-space: pre;
-    font-family: 'Cascadia Code', monospace;
-    font-size: 30px;
-    justify-items: center;
+body {
+    background-color: rgb(73, 116, 255);
+    font-family: product-sans, sans-serif;
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+
 }
 
-.test-container > div {
-    /* border: 1px solid black; */
-    margin: 1px;
-    background: radial-gradient(ellipse at center, white, rgba(215, 215, 215, 0.485));
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-inline: 10px;
+}
+
+.test-container {
+    border: 1px solid black;
+    border-radius: 5px;
+    display: inline-block;
+    white-space: pre-wrap;
+    font-size: 15px;
+    background-color: rgb(232, 232, 232);
+    padding: 5px;
+    text-align: center;
+}
+
+.stats-container {
+    margin-bottom: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgb(157, 188, 255);
+    padding-inline: 5px;
+    width: fit-content;
+}
+
+.stats-container > div {
+    padding: 5px;
+}
+
+.test-container {
+    margin: 20px;
+
+}
+.test-container > span {
+    padding-inline: 1px;
+    box-sizing: border-box;
 }
 
 .correct {
-    background: radial-gradient(ellipse at center, white, rgba(62, 241, 56, 0.655)) !important;
-    /* color: rgb(14, 226, 14); */
+    background-color: rgba(55, 255, 55, 0.57);
 }
 
 .incorrect {
-    background: radial-gradient(ellipse at center, white, rgba(198, 50, 50, 0.485)) !important;
+    background-color: rgba(255, 43, 43, 0.57);
+}
+
+.location {
+    border: 1px solid black;
 }
