@@ -1,10 +1,22 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from random import randint
+from sys import argv
 
 page_locaiton = "./page"
 data_location = "./data"
+
 name = "localhost"
 port = 8080
+args = iter(argv)
+for arg in args:
+    if arg == "-p":
+        port = int(next(args))
+    elif arg == "--visible":
+        name = "0.0.0.0"
+    elif arg == "--hidden":
+        name = "localhost"
+
+
 test_texts = 3
 class TypingTestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -46,5 +58,5 @@ class TypingTestHandler(BaseHTTPRequestHandler):
 if __name__ == '__main__':
     server_address = (name, port)
     httpd = HTTPServer(server_address, TypingTestHandler)
-    print('Server running on port %s' % port)
+    print(f"Server available at: {name}:{port}")
     httpd.serve_forever()

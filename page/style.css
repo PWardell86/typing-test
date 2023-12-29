@@ -61,13 +61,13 @@ h1 {
 
 @keyframes flash-border {
     0% {
-        border-color: black;
+        border-color: var(--main-container-color);
     }
     50% {
-        border-color: rgb(111, 163, 34);
+        background-color: rgba(68, 213, 0, 0.548);
     }
     100% {
-        border-color: black;
+        background-color: var(--main-container-color);
     }
 }
 

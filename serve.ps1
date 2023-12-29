@@ -1,1 +1,1 @@
-python ./http_host.py
+python ./http_host.py $args

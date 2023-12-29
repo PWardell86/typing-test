@@ -1,35 +1,35 @@
 const textContainer = document.querySelector(".test-container");
-const validChars = /^[a-zA-Z.,;:'"!?()\[\]{}\s]$/;
+const validChars = /^[a-zA-Z-.,;:'"!?()\[\]{}\s]$/;
 const timerEl = document.querySelector("#timer");
 const wpmEl = document.querySelector("#wpm");
 const accuracyEl = document.querySelector("#accuracy");
 const resetBtn = document.querySelector("#reset-btn");
 
-let started = false;
-let currentChar = 0;
-let wpm = 0;
-let correct = 0;
-let incorrect = 0;
-let accuracy = 0;
+const DEFAULT_STATE = {
+  started: false,
+  finished: false,
+  currentChar: 0,
+  wpm: 0,
+  correct: 0,
+  incorrect: 0,
+  accuracy: 0,
+  totalTime: 0,
+  startTime: 0
+}
 
-let totalTime = 0;
-let startTime = 0;
+let state = DEFAULT_STATE;
+
+//TODO: Change how it works for mobile
 
 async function reset() {
-  started = false;
-  currentChar = 0;
-  wpm = 0;
-  correct = 0;
-  incorrect = 0;
-  accuracy = 0;
-  totalTime = 0;
-  startTime = 0;
+  state = DEFAULT_STATE;
   resetBtn.innerText = "...";
   await init();
   resetBtn.innerText = "Reset";
 }
 
 async function init() {
+  window.setInterval(update_stats, 100);
   textContainer.style.display = "none";
   // Get text from local file: text.txt and call generateText with it
   await fetch("./test.txt")
@@ -38,8 +38,6 @@ async function init() {
       clearText();
       generateText(data);
     });
-  // Show the text container
-
   resetStats();
   indicateLoaded();
   textContainer.style.display = "block";
@@ -48,7 +46,7 @@ async function init() {
 function indicateLoaded() {
   textContainer.style.animation = 'none';
   textContainer.offsetHeight;
-  textContainer.style.animation = 'flash-border 0.4s';
+  textContainer.style.animation = 'flash-border 0.5s';
 }
 
 function generateText(text) {
@@ -70,17 +68,17 @@ function clearText() {
 document.addEventListener("keydown", function (event) {
   const key = event.key;
   const textElements = textContainer.children;
-
+  if (set_finished()) return;
   // Make sure spacebar doesn't scroll the page
   if (event.key === " ") event.preventDefault();
 
   // Undo
   if ("Backspace" == key) {
-    if (currentChar > 0) {
-      currentChar--;
-      charClasses = textElements[currentChar].classList;
+    if (state.currentChar > 0) {
+      state.currentChar--;
+      charClasses = textElements[state.currentChar].classList;
       // Update the number of correct/incorrect characters
-      charClasses.contains("correct") ? correct-- : incorrect--;
+      charClasses.contains("correct") ? state.correct-- : state.incorrect--;
       charClasses.remove("correct");
       charClasses.remove("incorrect");
     }
@@ -91,45 +89,54 @@ document.addEventListener("keydown", function (event) {
   update_accuracy();
 });
 
+function set_finished() {
+  if (state.currentChar >= textContainer.children.length - 1) {
+    state.finished = true;
+    return;
+  }
+  state.finished = false;
+}
+
 function check_key(key) {
   const textElements = textContainer.children;
   if (!validChars.test(key)) {
     return;
   }
-  started = true;
-  if (key == textElements[currentChar].innerText) {
-    textElements[currentChar].classList.add("correct");
-    correct++;
+  state.started = true;
+  if (key == textElements[state.currentChar].innerText) {
+    textElements[state.currentChar].classList.add("correct");
+    state.correct++;
   } else {
-    textElements[currentChar].classList.add("incorrect");
-    incorrect++;
+    textElements[state.currentChar].classList.add("incorrect");
+    state.incorrect++;
   }
-  currentChar++;
+  state.currentChar++;
 }
 
 function update_accuracy() {
-  accuracy = correct / (correct + incorrect);
+  state.accuracy = state.correct / (state.correct + state.incorrect);
   document.querySelector("#accuracy").innerText =
-    "Accuracy: " + (accuracy * 100).toFixed(0) + "%";
+    "Accuracy: " + (state.accuracy * 100).toFixed(0) + "%";
 }
 
 function update_timer() {
-  if (!started) {
+  if (!state.started) {
     startTime = (new Date()).getTime();
     return;
   }
-  console.log("updating");
-  totalTime = (((new Date()).getTime() - startTime) / 1000);
-  timerEl.innerText = "Time: " + totalTime.toFixed(1)  + "s";
+  // console.log("updating");
+  state.totalTime = (((new Date()).getTime() - startTime) / 1000);
+  timerEl.innerText = "Time: " + state.totalTime.toFixed(1)  + "s";
 }
 
 function update_wpm() {
-  if (!started) return;
-  wpm = (correct / 5) / (totalTime / 60);
-  wpmEl.innerText = "WPM: " + wpm.toFixed(0);
+  if (!state.started) return;
+  state.wpm = (state.correct / 5) / (state.totalTime / 60);
+  wpmEl.innerText = "WPM: " + state.wpm.toFixed(0);
 }
 
 function update_stats() {
+  if (state.finished) return;
   update_timer();
   update_wpm();
 }
@@ -140,5 +147,4 @@ function resetStats() {
   timerEl.innerText = "Time: 0s";
 }
 
-window.setInterval(update_stats, 100);
 window.onload = init;
