@@ -16,7 +16,6 @@ class TypingTestHandler(BaseHTTPRequestHandler):
 
             with open(f'{data_location}/test.txt', 'rb') as fp:
                 for i, line in enumerate(fp):
-                    print(1, line)
                     if i == test_line:
                         self.wfile.write(line)
                         break
@@ -47,5 +46,5 @@ class TypingTestHandler(BaseHTTPRequestHandler):
 if __name__ == '__main__':
     server_address = (name, port)
     httpd = HTTPServer(server_address, TypingTestHandler)
-    # print('Server running on port %s' % port)
+    print('Server running on port %s' % port)
     httpd.serve_forever()
