@@ -7,21 +7,38 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="header">
-        <h1>Typing test</h1>
-        <div id="test-info">Start typing to begin...</div>
+    <div class="blur"></div>
+    <div class="float-login">
+        <h1>Login</h1>
+        <input type="text" placeholder="Username" id="username">
+        <input type="password" placeholder="Password" id="password">
+        <div class="login-btns">
+            <button class="button" onclick="login()">Login</button>
+            <a href="register.php" class="register-btn">Sign up</a>
+        </div>
+        
     </div>
+    <div id="organizer">
+        <div id="main-section">
+            <div class="header">
+                <h1>Typing test</h1>
+                <div id="test-info">Start typing to begin...</div>
+            </div>
+            <div class="stats-container">
+                <div id="accuracy" style="display: none;">Accuracy: 100%</div>
+                <div id="wpm">WPM: 0</div>
+                <div id="timer">Time: 0.0s</div>
+            </div>
+            <div class="test-container" style="visibility: hidden;"></div>
 
-    <div class="test-container" style="display: none;"></div>
-
-    <div class="buttons">
-        <div id="reset-btn" class="button" onclick="reset()">Reset</div>
-    </div>
-    
-    <div class="stats-container">
-        <div id="accuracy">Accuracy: 100%</div>
-        <div id="wpm">WPM: 0</div>
-        <div id="timer">Time: 0.0s</div>
+            <div class="buttons">
+                <button id="reset-btn" class="button" onclick="reset()">Reset</button>
+                <button id="new-text-btn" class="button" onclick="getNewText()">New Text</button>
+            </div>
+        </div>
+        <div id="options-section" style="display: none;">
+            <button class="alt-button">Login</button>
+        </div>
     </div>
 </body>
 </html>

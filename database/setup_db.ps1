@@ -1,0 +1,1 @@
+psql -U postgres -f .\database\sql\SETUP.sql
